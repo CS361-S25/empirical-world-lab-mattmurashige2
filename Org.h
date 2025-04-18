@@ -16,10 +16,20 @@ class Organism {
     void SetPoints(double _in) {points = _in;}
     void AddPoints(double _in) {points += _in;}
 
-
-    void Process() {
-        std::cout << "Processing" << std::endl; //feel free to get rid of this
+    void Process(int points) {
+        this->points += points;
        
+    }
+
+    emp::Ptr<Organism> CheckReproduction() {
+        if (points > 1000) {
+            emp::Ptr<Organism> offspring = new Organism(*this);
+            offspring->points = 0;
+            points -= 1000;
+            return offspring;
+        } else {
+            return nullptr;
+        }
     }
 };
 #endif
