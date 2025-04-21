@@ -3,6 +3,8 @@
 #include "emp/web/web.hpp"
 #include "World.h"
 #include "Org.h"
+#include "Cow.h"
+#include "Horse.h"
 
 emp::web::Document doc{"target"};
 
@@ -17,7 +19,7 @@ class AEAnimator : public emp::web::Animate {
 
     emp::web::Canvas canvas{width, height, "canvas"};
 
-    private: emp::Random random{5};
+    private: emp::Random random{6};
     private: OrgWorld world{random};
 
     public:
@@ -29,8 +31,11 @@ class AEAnimator : public emp::web::Animate {
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        Organism* new_org = new Organism(&random);
-        world.Inject(*new_org);
+        Organism* my_cow = new Cow(&random, 0);
+        Organism* my_horse = new Horse(&random, 0);
+
+        world.AddOrgAt(my_cow, 0);
+        world.AddOrgAt(my_horse, 1);
         world.Resize(10, 10);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
 
@@ -43,7 +48,7 @@ class AEAnimator : public emp::web::Animate {
         for (int x = 0; x < num_w_boxes; x++){
             for (int y = 0; y < num_h_boxes; y++) {
                 if (world.IsOccupied(org_num)) {
-                    canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "black", "black");
+                    canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, world.getPop()[org_num]->getColor(), "black");
                 } else {
                     canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "white", "black");
                 }
